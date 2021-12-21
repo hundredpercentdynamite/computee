@@ -1,3 +1,6 @@
+import numpy as np
+import scipy.interpolate as si
+
 points = [
     [0.957, 0.296],
     [0.625, 0.782],
@@ -11,9 +14,18 @@ points = [
     [0.824, -0.566],
 ]
 
+newPoints = []
 
-import numpy as np
-import scipy.interpolate as si
+for i in range(0, len(points)):
+    if i == len(points) - 1:
+        break
+    x = (points[i][0] + points[i + 1][0]) * 0.5
+    y = (points[i][1] + points[i + 1][1]) * 0.5
+    newPoints.append([x, y])
+
+print(newPoints)
+print(len(newPoints))
+
 
 
 def bspline(cv, n=100, degree=3, periodic=False):
@@ -58,13 +70,15 @@ import matplotlib.pyplot as plt
 
 colors = ('b', 'g', 'r', 'c', 'm', 'y', 'k')
 
-cv = np.array(points)
+basepoints = np.array(points)
+cv = np.array(newPoints)
 
-plt.plot(cv[:, 0], cv[:, 1], 'o', label='Control points')
+plt.plot(basepoints[:, 0], basepoints[:, 1], 'o', label='Control points')
+plt.plot(cv[:, 0], cv[:, 1], 'o', label='Middle points')
 
 # for d in range(1, 2):
 d = 2
-p = bspline(cv, n=50, degree=d, periodic=True)
+p = bspline(cv, n=50, degree=d, periodic=False)
 x, y = p.T
 plt.plot(x, y, 'k-', label='B-spline', color=colors[d % len(colors)])
 
