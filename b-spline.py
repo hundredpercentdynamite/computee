@@ -23,9 +23,6 @@ for i in range(0, len(points)):
     y = (points[i][1] + points[i + 1][1]) * 0.5
     newPoints.append([x, y])
 
-print(newPoints)
-print(len(newPoints))
-
 
 
 def bspline(cv, n=100, degree=3, periodic=False):
@@ -76,17 +73,18 @@ cv = np.array(newPoints)
 plt.plot(basepoints[:, 0], basepoints[:, 1], 'o', label='Control points')
 plt.plot(cv[:, 0], cv[:, 1], 'o', label='Middle points')
 
-# for d in range(1, 2):
+basepoints[0] = cv[0]
+basepoints[-1] = cv[-1]
 d = 2
-p = bspline(cv, n=50, degree=d, periodic=False)
+p = bspline(basepoints, n=100, degree=d, periodic=False)
 x, y = p.T
 plt.plot(x, y, 'k-', label='B-spline', color=colors[d % len(colors)])
 
 plt.minorticks_on()
-plt.legend()
+plt.legend(loc='upper right')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.xlim(-5, 5)
-plt.ylim(-5, 5)
+plt.xlim(-1.5, 1.5)
+plt.ylim(-1.5, 1.5)
 plt.gca().set_aspect('equal', adjustable='box')
 plt.show()
